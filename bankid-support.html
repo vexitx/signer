@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BankID Menu</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #005ea6;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.menu-item {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-item:hover {
+    background-color: #0056b3;
+}
+
+.footer {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.footer p {
+    margin: 5px 0;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Menu</h1>
+        <div class="menu">
+            <div class="menu-item">BankID</div>
+            <div class="menu-item">Felsökning för Mobilt BankID</div>
+            <div class="menu-item">Felsökning Mobilt BankID</div>
+            <div class="menu-item">Anulera BankID signatur/kod</div>
+            <div class="menu-item">Omformulera BankID</div>
+            <div class="menu-item">BankID</div>
+        </div>
+        <div class="footer">
+            <p>Privacy policy</p>
+            <p>Cookie policy</p>
+            <p>2024 Finanslell ID-Teknik BID AB</p>
+        </div>
+    </div>
+    <script>
+        // You can add interactivity here if needed
+document.querySelectorAll('.menu-item').forEach(item => {
+    item.addEventListener('click', () => {
+        alert(`You clicked on: ${item.textContent}`);
+    });
+});
+    </script>
+</body>
+</html>
