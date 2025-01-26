@@ -22,9 +22,9 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 375px; /* Standard mobile width */
+            width: 375px;
             max-width: 100%;
-            height: 667px; /* Standard mobile height */
+            height: 667px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -33,25 +33,42 @@
 
         h1 {
             margin-bottom: 20px;
+            color: #fa8c16;
+            text-align: start;
+            padding: 10px;
         }
 
         .services {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 2px;
         }
 
         .service {
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
+            padding: 5px 10px;
+            /* background-color: #007bff; */
+            color: black;
             border-radius: 4px;
             cursor: pointer;
             transition: background-color 0.3s;
+            text-align: start;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: bold;
         }
 
-        .service:hover {
+        /* .service:hover {
             background-color: #0056b3;
+        } */
+
+        .blue-links{
+            color: #0056b3;
+            text-decoration: underline;
+            /* background-color: #fff; */
+            text-align: start;
+            padding-left: 10px;
+            margin-top: 5px;
+            font-size: small;
         }
 
         @media (max-width: 374px) {
@@ -64,25 +81,32 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Many</h1>
-        <div class="services">
-            <div class="service">Vara tjanster</div>
-            <div class="service">Handelser i livet</div>
-            <div class="service">Kundservice</div>
-            <div class="service">Bil privatkund</div>
-            <div class="service">Private Banking</div>
-            <div class="service">Spatribjilp</div>
-            <div class="service">Siklerhet och bedragerier</div>
+    <div  id="container-section" class="container">
+        <div id="close">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" style="position: relative; top: 20px; left: 170px; cursor: pointer;"><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/>
+            </svg>
         </div>
+        
+        <h1>Meny</h1>
+
+        <div  class="services">
+            <a href="#" class="service">Vára tjänster <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16px"><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.75 22.5L23.25 12 12.75 1.5"/></svg></a>
+            <a href="#" class="service">Händelser i livet <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16px"><path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12.75 22.5L23.25 12 12.75 1.5"/></svg></a>
+            <a href="#" class="service">Kundservice</a>
+            <a href="#" style="margin-top: 10px;" class="blue-links">Bli privatkund</a>
+            <a href="#" class="blue-links">Private Banking</a>
+            <a href="#" class="blue-links">Spärrhjälp</a>
+            <a href="#" class="blue-links">Säkerhet och bedrägerier</a>
+
+        </div>
+            
     </div>
     <script>
-        // You can add interactivity here if needed
-        document.querySelectorAll('.service').forEach(service => {
-            service.addEventListener('click', () => {
-                alert(`You clicked on: ${service.textContent}`);
+        let closer = document.getElementById('close');
+        let container_section = document.getElementById("container-section");
+        closer.addEventListener('click', () => {
+                container_section.style.display = "none";
             });
-        });
     </script>
 </body>
 </html>
