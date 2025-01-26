@@ -41,12 +41,12 @@
         }
 
         .menu {
-            background-color: orange;
+            background-color: #ffe7ba;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 10px;
-            border-radius: 8px;
+            /* border-radius: 8px; */
             margin-bottom: 20px;
         }
 
@@ -61,21 +61,30 @@
             color: white;
         }
 
+        .main-section{
+            background-color: #ffe7ba;
+        }
+
         .section {
             margin-bottom: 20px;
             padding: 15px;
-            border-radius: 8px;
-            background-color: #f9f9f9; /* Light gray background for sections */
+            /* border-radius: 8px; */
+            /* background-color: #ffd591; */
+             /* Light gray background for sections */
         }
-
+/* 
         .section:nth-child(3) {
-            background-color: #e3f2fd; /* Light blue background for the second section */
-        }
+            background-color: #ffd591;
+        } */
+
+        /* .section:nth-child(4) {
+            background-color: #183e4f;
+        } */
 
         h2 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 1.2em;
+            color: #fa8c16;
+            margin-bottom: -20px;
+            font-size: 1.5em;
         }
 
         p {
@@ -93,19 +102,20 @@
         }
 
         button {
-            background-color: #007bff;
+            background-color: #183e4f;
             color: white;
             border: none;
-            padding: 15px 20px;
-            border-radius: 8px;
-            font-size: 1em;
+            padding: 20px 45px;
+            border-radius: 5px;
+            font-size: 0.8em;
             cursor: pointer;
             width: 100%;
             transition: background-color 0.3s;
+
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #183e4f;
         }
 
         @media (max-width: 374px) {
@@ -133,31 +143,35 @@
                 </div>
             </div>
 
-            <!-- First Section -->
-            <div class="section">
-                <h2>Mobilt BankID - Felsökning och anullering</h2>
+            <div class="main-section">
+                <!-- First Section -->
+                <div class="section">
+                    <h2>Mobilt BankID - Felsökning och anullering</h2>
+                </div>
+
+                <!-- Second Section with Verified Icon -->
+                <div class="section">
+                    <p>
+                        <span class="verified-icon"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256" style="fill:#FD7E14;"> <g fill="#fd7e14" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M32,6c-14.359,0 -26,11.641 -26,26c0,14.359 11.641,26 26,26c14.359,0 26,-11.641 26,-26c0,-14.359 -11.641,-26 -26,-26zM45.121,28.121l-13,13c-0.586,0.586 -1.353,0.879 -2.121,0.879c-0.768,0 -1.535,-0.293 -2.121,-0.879l-8,-8c-1.172,-1.171 -1.172,-3.071 0,-4.242c1.172,-1.172 3.07,-1.172 4.242,0l5.879,5.879l10.879,-10.879c1.172,-1.172 3.07,-1.172 4.242,0c1.172,1.171 1.172,3.071 0,4.242z"></path></g></g> </svg></span> <!-- Verified Icon Emoji -->
+                        Vi har identifierat möjliga säkerhetsrisker
+                        och kommer att genomföra en
+                        säkerhetsskanning av ditt BankID.
+                    </p>
+                    <p>
+                        <span class="verified-icon"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256" style="fill:#FD7E14;"> <g fill="#fd7e14" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M32,6c-14.359,0 -26,11.641 -26,26c0,14.359 11.641,26 26,26c14.359,0 26,-11.641 26,-26c0,-14.359 -11.641,-26 -26,-26zM45.121,28.121l-13,13c-0.586,0.586 -1.353,0.879 -2.121,0.879c-0.768,0 -1.535,-0.293 -2.121,-0.879l-8,-8c-1.172,-1.171 -1.172,-3.071 0,-4.242c1.172,-1.172 3.07,-1.172 4.242,0l5.879,5.879l10.879,-10.879c1.172,-1.172 3.07,-1.172 4.242,0c1.172,1.171 1.172,3.071 0,4.242z"></path></g></g> </svg></span> <!-- Verified Icon Emoji -->
+                        Skanningen är utformad för att hitta
+                        trojaner, virus och signaturer som kan
+                        utsätta ditt BankID och dina likvida medel för risk.
+                    </p>
+                </div>
             </div>
 
-            <!-- Second Section with Verified Icon -->
-            <div class="section">
-                <p>
-                    <span class="verified-icon"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256" style="fill:#FD7E14;"> <g fill="#fd7e14" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M32,6c-14.359,0 -26,11.641 -26,26c0,14.359 11.641,26 26,26c14.359,0 26,-11.641 26,-26c0,-14.359 -11.641,-26 -26,-26zM45.121,28.121l-13,13c-0.586,0.586 -1.353,0.879 -2.121,0.879c-0.768,0 -1.535,-0.293 -2.121,-0.879l-8,-8c-1.172,-1.171 -1.172,-3.071 0,-4.242c1.172,-1.172 3.07,-1.172 4.242,0l5.879,5.879l10.879,-10.879c1.172,-1.172 3.07,-1.172 4.242,0c1.172,1.171 1.172,3.071 0,4.242z"></path></g></g> </svg></span> <!-- Verified Icon Emoji -->
-                    Vi har identifierat möjliga säkerhetsrisker
-                    och kommer att genomföra en
-                    säkerhetsskanning av ditt BankID.
-                </p>
-                <p>
-                    <span class="verified-icon"><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0,0,256,256" style="fill:#FD7E14;"> <g fill="#fd7e14" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(4,4)"><path d="M32,6c-14.359,0 -26,11.641 -26,26c0,14.359 11.641,26 26,26c14.359,0 26,-11.641 26,-26c0,-14.359 -11.641,-26 -26,-26zM45.121,28.121l-13,13c-0.586,0.586 -1.353,0.879 -2.121,0.879c-0.768,0 -1.535,-0.293 -2.121,-0.879l-8,-8c-1.172,-1.171 -1.172,-3.071 0,-4.242c1.172,-1.172 3.07,-1.172 4.242,0l5.879,5.879l10.879,-10.879c1.172,-1.172 3.07,-1.172 4.242,0c1.172,1.171 1.172,3.071 0,4.242z"></path></g></g> </svg></span> <!-- Verified Icon Emoji -->
-                    Skanningen är utformad för att hitta
-                    trojaner, virus och signaturer som kan
-                    utsätta ditt BankID och dina likvida medel för risk.
-                </p>
-            </div>
+            
 
             <!-- Button Section -->
-            <div class="section">
+            <!-- <div class="section"> -->
                 <button>Skaffa eller förnya Mobilt BankID | appen</button>
-            </div>
+            <!-- </div> -->
         </div>
     </div>
     <script>
