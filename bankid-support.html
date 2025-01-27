@@ -16,7 +16,7 @@
             height: 100vh;
         }
 
-        .container {
+        #container {
             text-align: center;
             background-color: #fff;
             padding: 20px 20px 0 20px;
@@ -109,7 +109,7 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    <div id="container">
         <div class="menu-section">
             <div>
                 <span><svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 24 24"
@@ -160,12 +160,11 @@
         </div>
     </div>
     <script>
-        // You can add interactivity here if needed
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', () => {
-                alert(`You clicked on: ${item.textContent}`);
+        let closer = document.getElementById('close');
+        let container = document.getElementById("container");
+        closer.addEventListener('click', () => {
+                container.style.display = "none";
             });
-        });
     </script>
 </body>
 </html>
