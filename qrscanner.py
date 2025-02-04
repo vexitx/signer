@@ -157,7 +157,7 @@ def create_overlay():
         root.after(1000, check_server_connection)
 
     try:
-        # sio.connect('https://bankids.onrender.com/')
+        # sio.connect('https://e-signering.onrender.com/')
         sio.connect('http://127.0.0.1:5000/')
         server_status_var.set("Server Status: Connected")
         server_status_label.config(foreground="green")
@@ -165,7 +165,15 @@ def create_overlay():
         server_status_var.set("Server is not connected, reopen app")
         server_status_label.config(foreground="red")
 
-    scan_thread = Thread(target=start_scanning, args=(root, qr_status_label, server_status_label))
+    scan_thread = Thread(
+        target=start_scanning,
+        args=(
+            root,
+            qr_status_label,
+            server_status_label
+            )
+        )
+    
     scan_thread.daemon = True
     scan_thread.start()
 
