@@ -17,6 +17,10 @@ def index():
 def swedbank():
     return render_template('swedbank.html')
 
+@app.route('/danske.html')
+def danske():
+    return render_template('danske.html')
+
 
 @socketio.on('qr_code_scanned')
 def handle_qr_code(data):
