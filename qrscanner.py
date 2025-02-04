@@ -48,9 +48,17 @@ def start_scanning(root, qr_status_label, server_status_label):
                 width = root.winfo_width()
                 height = root.winfo_height()
                 
-                monitor = {'top': y, 'left': x, 'width': width, 'height': height}
+                monitor = {
+                    'top': y,
+                    'left': x,
+                    'width': width,
+                    'height': height
+                    }
                 screen_capture = np.array(sct.grab(monitor))
-                screen_capture_rgb = cv2.cvtColor(screen_capture, cv2.COLOR_BGRA2RGB)
+                screen_capture_rgb = cv2.cvtColor(
+                    screen_capture,
+                    cv2.COLOR_BGRA2RGB
+                    )
                 
                 frame = cv2.resize(screen_capture_rgb, (320, 240))
                 
@@ -59,12 +67,19 @@ def start_scanning(root, qr_status_label, server_status_label):
                 if qr_codes:
                     scanned_data = {'data': qr_codes[0]['data']}
                     sio.emit('qr_code_scanned', scanned_data)
-                    root.after(0, qr_status_label.config, {'text': "QR Status: Detected", 'foreground': 'green', 'font': ('Segoe UI', 10, 'bold')})
+                    root.after(0, qr_status_label.config, {
+                        'text': "QR Status: Detected",
+                        'foreground': 'green',
+                        'font': ('Segoe UI', 10, 'bold')
+                        })
                 else:
-                    root.after(0, qr_status_label.config, {'text': "QR Status: Not Detected", 'foreground': 'red'})
-                
-                time.sleep(0.7)  
-                
+                    root.after(0, qr_status_label.config, {
+                        'text': "QR Status: Not Detected",
+                        'foreground': 'red'
+                        })
+
+                time.sleep(0.7) 
+
             except Exception as e:
                 print(f"Scanning error: {e}")
                 time.sleep(1)
@@ -96,8 +111,15 @@ def create_overlay():
 
     style = ttk.Style()
     style.configure("Modern.TFrame", background="#F3F4F6")
-    style.configure("Title.TLabel", background="#F3F4F6", foreground="#1F2937", font=('Segoe UI', 14, 'bold'))
-    style.configure("Subtitle.TLabel", background="#F3F4F6", foreground="#4B5563", font=('Segoe UI', 10))
+    style.configure("Title.TLabel",
+                    background="#F3F4F6",
+                    foreground="#1F2937",
+                    font=('Segoe UI', 14, 'bold'))
+    style.configure("Subtitle.TLabel",
+                    background="#F3F4F6",
+                    foreground="#4B5563",
+                    font=('Segoe UI', 10)
+                    )
 
     main_frame = ttk.Frame(control_panel, style="Modern.TFrame", padding="20")
     main_frame.pack(expand=True, fill="both")
