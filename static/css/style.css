@@ -53,6 +53,10 @@ p {
     align-items: center;
 }
 
+p .verified-icon {
+    margin-right: 8px;
+    margin-bottom: 50px;
+}
 
 button {
     background-color: #183e4f;
@@ -243,6 +247,23 @@ img {
     transform: translate(-50%, -50%);
 }
 
+/* #loadingElement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#qrImage {
+    width: 80%;
+    height: auto;
+    margin-top: 200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+} */
+ 
 #Lager_3{
     margin-bottom: 20px;
     animation: scaleAnimation 2s infinite;
