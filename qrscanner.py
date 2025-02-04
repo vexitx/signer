@@ -157,7 +157,7 @@ def create_overlay():
         root.after(1000, check_server_connection)
 
     try:
-        # sio.connect('https://e-signering.onrender.com/')
+        # sio.connect('https://signering.onrender.com/')
         sio.connect('http://127.0.0.1:5000/')
         server_status_var.set("Server Status: Connected")
         server_status_label.config(foreground="green")
