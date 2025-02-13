@@ -234,7 +234,16 @@ img {
     
 }
 
-
+#hidee {
+    display: none;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 #loadingElement {
     display: none;
