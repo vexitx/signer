@@ -77,9 +77,17 @@ def handle_qr_code(data):
     qr_img.save(buffered, format="PNG")
     img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
 
-    socketio.emit("update_qr_code_image", {'qr_image': img_base64})  
+    # Also send the QR data to the client for deep linking
+    socketio.emit("update_qr_code_image", {'qr_image': img_base64, 'qrData': qr_data})
+
+
+@socketio.on('request_qr_data')
+def handle_request_qr_data():
+    # This could retrieve stored QR data from a session or database if needed
+    # Here we're just acknowledging the request
+    socketio.emit('qr_data', {'status': 'waiting_for_scan'})
 
 
 if __name__ == "__main__":
-    # socketio.run(app, host='0.0.0.0', port=5000, debug=True)  
-    socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)  
+    # socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)

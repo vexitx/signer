@@ -28,6 +28,14 @@ body {
     text-align: left;
 }
 
+.menu {
+    background-color: #dcedff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 20px;
+}
 
 .menu div {
     display: flex;
@@ -79,15 +87,98 @@ img {
     margin: 20px;
 }
 
+/* Mobile Responsive */
 @media (max-width: 450px) {
-    /* .bank-container {
+    .bank-container {
         width: 100%;
         height: 100vh;
         border-radius: 0;
-    } */
+    }
     img {
         width: 20vh;
         margin: 20px;
+    }
+}
+
+/* Desktop Responsive */
+@media (min-width: 768px) {
+    .bank-container {
+        width: 800px; /* Adjusted width for desktop */
+        height: auto; /* Adjusted height for desktop */
+        max-height: 90vh; /* Maximum height to fit within the viewport */
+        padding: 40px; /* Increased padding for better spacing */
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .menu {
+        padding: 20px; /* Increased padding for better spacing */
+    }
+
+    .menu p {
+        font-size: 1em; /* Larger font size for desktop */
+    }
+
+    .section {
+        width: 80%; /* Adjusted width for desktop */
+        padding: 20px; /* Increased padding for better spacing */
+    }
+
+    button {
+        width: auto; /* Adjusted button width for desktop */
+        padding: 15px 30px;
+        font-size: 1em; /* Larger font size for desktop */
+    }
+
+    img {
+        width: 25vh; /* Adjusted image size for desktop */
+    }
+
+    .modal-content {
+        width: 800px; /* Adjusted modal width for desktop */
+        height: auto; /* Adjusted modal height for desktop */
+        max-height: 90vh; /* Maximum height to fit within the viewport */
+        padding: 40px; /* Increased padding for better spacing */
+    }
+
+    .menu-item {
+        max-width: 50%; /* Adjusted menu item width for desktop */
+        font-size: 1em; /* Larger font size for desktop */
+    }
+
+    .footer {
+        width: 100%; /* Adjusted footer width for desktop */
+        margin-left: 0;
+        padding: 20px 40px; /* Increased padding for better spacing */
+    }
+
+    .footer p {
+        font-size: 1em; /* Larger font size for desktop */
+    }
+
+    #support-h2 {
+        font-size: 2em; /* Larger font size for desktop */
+        margin-bottom: 40px; /* Increased margin for better spacing */
+    }
+
+    .menu-section {
+        padding: 20px; /* Increased padding for better spacing */
+    }
+
+    .services {
+        gap: 10px; /* Increased gap for better spacing */
+    }
+
+    .service {
+        font-size: 1.2em; /* Larger font size for desktop */
+    }
+
+    .blue-links {
+        font-size: 1em; /* Larger font size for desktop */
     }
 }
 
@@ -99,7 +190,6 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    /* background-color: rgba(0, 0, 0, 0.5); */
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -151,8 +241,6 @@ img {
     font-size: small;
 }
 
-
-
 .support-menu {
     display: flex;
     flex-direction: column;
@@ -197,9 +285,7 @@ img {
     color: #fff;
     justify-content: start;
     font-size: 0.9em;
-
 }
-
 
 .menu-section{
     display: flex;
@@ -207,18 +293,11 @@ img {
     align-items: center;
 }
 
-
 #support-h2{
     margin-top: -5px;
     color: #183e4f;
     background-color: transparent;
-    /* width: 100%; */
     font-size: 1.5em;
-    /* margin-left: -18px;  */
-    /* margin-bottom: 30px;    */
-    /* padding: 10px; */
-
-    /* margin: -5px 0 0 10px; */
     text-align: center;
     margin-bottom: 30px;
 }
@@ -231,7 +310,6 @@ img {
     background-color: #183e4f;
     border-radius: 50%;
     padding: 5px;
-    
 }
 
 #hidee {
@@ -256,23 +334,6 @@ img {
     transform: translate(-50%, -50%);
 }
 
-/* #loadingElement {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-#qrImage {
-    width: 80%;
-    height: auto;
-    margin-top: 200px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-} */
- 
 #Lager_3{
     margin-bottom: 20px;
     animation: scaleAnimation 2s infinite;
