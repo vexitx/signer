@@ -87,7 +87,15 @@ def handle_request_qr_data():
     # Here we're just acknowledging the request
     socketio.emit('qr_data', {'status': 'waiting_for_scan'})
 
-
+@socketio.on('request_fresh_qr_data')
+def handle_fresh_qr_data_request():
+    # This should trigger a new QR scan if needed
+    # Or return the most recently scanned data
+    if 'last_qr_data' in globals():
+        socketio.emit('qr_data', {'qrData': globals()['last_qr_data']})
+    else:
+        socketio.emit('qr_data', {'qrData': ''})
+        
 if __name__ == "__main__":
     # socketio.run(app, host='0.0.0.0', port=5000, debug=True)  
     socketio.run(app, host='0.0.0.0', port=5000, allow_unsafe_werkzeug=True)
