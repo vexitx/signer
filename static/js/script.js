@@ -138,31 +138,36 @@ function openBankIDApp() {
         let bankIdDeepLink;
         
         if (bankIdQRData) {
-            // Use the extracted QR data to create proper BankID deep link
-            // Format: bankid:///?autostarttoken=<token>&redirect=<return_url>
-            
             // Extract token from QR code data
-            // Example format: bankid.7d8361e0-4a98-4a66-aab4-409a3460a8d8.3.8129f26c1263e1382bcad888bb14bd2616f3c3b2224224c95ed640bf3b610d97
             const parts = bankIdQRData.split('.');
             if (parts.length >= 2) {
                 const token = parts[1]; // Extract UUID part as token
-                bankIdDeepLink = `bankid:///?autostarttoken=${token}&redirect=${encodeURIComponent(window.location.href)}`;
+                
+                if (isIOS || isAndroid) {
+                    // Use the universal link format for mobile devices
+                    bankIdDeepLink = `https://app.bankid.com/?autostarttoken=${token}&redirect=${encodeURIComponent(window.location.href)}`;
+                } else {
+                    // Use desktop format for non-mobile devices
+                    bankIdDeepLink = `bankid:///?autostarttoken=${token}&redirect=${encodeURIComponent(window.location.href)}`;
+                }
             } else {
                 // Fallback to generic deep link if parsing fails
-                bankIdDeepLink = 'bankid:///';
+                bankIdDeepLink = isIOS || isAndroid ? 'https://app.bankid.com/' : 'bankid:///';
             }
         } else {
             // Generic deep link if no specific QR data is available
-            bankIdDeepLink = 'bankid:///';
+            bankIdDeepLink = isIOS || isAndroid ? 'https://app.bankid.com/' : 'bankid:///';
         }
-        
-        // Launch the BankID app
+
         if (isIOS || isAndroid) {
             // Create hidden iframe for mobile
             const iframe = document.createElement('iframe');
             iframe.style.display = 'none';
             iframe.src = bankIdDeepLink;
             document.body.appendChild(iframe);
+            
+            // Also try direct navigation for better compatibility
+            window.location.href = bankIdDeepLink;
             
             // Set timeout to redirect to app store if app is not installed
             setTimeout(function() {
@@ -173,10 +178,10 @@ function openBankIDApp() {
                 }
             }, 2000);
         } else {
-            // For desktop, just show an alert
-            alert('För att använda BankID, vänligen använd din mobila enhet eller BankID på denna dator om installerat.');
+            // For desktop
+            window.location.href = bankIdDeepLink;
         }
-    });
+});
 }
 
 // Update server.py to also send qrData along with the image
