@@ -11,7 +11,6 @@ import base64
 import hmac
 import hashlib
 from datetime import datetime
-import re
 
 # Check if pyzbar is available, otherwise suggest installing it
 pyzbar_available = importlib.util.find_spec("pyzbar") is not None
@@ -24,9 +23,6 @@ sio = socketio.Client()
 
 stop_scanning = False
 scanned_data = {}
-
-# Regular expression to validate BankID QR code format
-BANKID_QR_PATTERN = re.compile(r'^bankid\.([a-zA-Z0-9\-]+)\.(\d+)\.([a-zA-Z0-9]+)$')
 
 
 class ModernButton(tk.Button):
@@ -111,24 +107,6 @@ def enhance_qr_image(frame):
         enhanced_images.append(dilated_edges)
     
     return enhanced_images
-
-
-def extract_bankid_token(qr_data):
-    """Extract the BankID token from QR data"""
-    if not qr_data:
-        return None
-    
-    # Check if it's a full BankID QR format
-    match = BANKID_QR_PATTERN.match(qr_data)
-    if match:
-        return match.group(1)  # Return the token part
-    
-    # If it's already just a token (UUID format)
-    uuid_pattern = re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', re.IGNORECASE)
-    if uuid_pattern.match(qr_data):
-        return qr_data
-    
-    return None
 
 
 def scan_for_qr_codes(frame):
@@ -333,16 +311,13 @@ def scan_for_qr_codes(frame):
                 detected_data = data
     
     # Process BankID QR code data
-    if detected_data:
-        # Try to extract BankID token from the QR data
-        bankid_token = extract_bankid_token(detected_data)
-        if bankid_token:
-            print(f"Detected BankID QR token: {bankid_token}")
-            # Return both full QR data and the extracted token for flexibility
-            return [
-                {'data': detected_data, 'method': 'bankid_qr_full'},
-                {'data': bankid_token, 'method': 'bankid_qr_token'}
-            ]
+    if detected_data and detected_data.startswith('bankid.'):
+        parts = detected_data.split('.')
+        if len(parts) == 4:
+            # Format: bankid.qrStartToken.time.qrAuthCode
+            qr_token = parts[1]
+            print(f"Detected BankID QR token: {qr_token}")
+            return [{'data': qr_token, 'method': 'bankid_qr'}]
     
     if results:
         print(f"Successfully detected QR code using method: {results[0]['method']}")
@@ -417,30 +392,13 @@ def start_scanning(root, qr_status_label, server_status_label, method_label):
                 # Process detection results
                 if qr_codes:
                     detected = True
-                    # Prioritize getting the token directly if available
-                    token_data = next((qr for qr in qr_codes if qr['method'] == 'bankid_qr_token'), None)
-                    if token_data:
-                        current_data = token_data['data']
-                    else:
-                        current_data = qr_codes[0]['data']
-                    
+                    current_data = qr_codes[0]['data']
                     detection_method = qr_codes[0].get('method', 'unknown')
                     
                     # Only emit if it's a new QR code or hasn't been sent in the last 3 seconds
                     current_time = time.time()
                     if current_data != last_detected_data or (current_time - last_detection_time) > 3:
-                        # First try to send the full QR data if available
-                        full_data = next((qr for qr in qr_codes if qr['method'] == 'bankid_qr_full'), None)
-                        
-                        if full_data:
-                            # Send the full QR data for animated QR codes
-                            scanned_data = {'data': full_data['data']}
-                            print(f"Sending full BankID QR data: {full_data['data']}")
-                        else:
-                            # Send token or whatever was detected
-                            scanned_data = {'data': current_data}
-                            print(f"Sending detected QR data: {current_data}")
-                            
+                        scanned_data = {'data': current_data}
                         sio.emit('qr_code_scanned', scanned_data)
                         last_detection_time = current_time
                         last_detected_data = current_data
@@ -489,7 +447,7 @@ def create_overlay():
     # Create the main overlay window
     root = tk.Tk()
     root.geometry("400x300")
-    root.title("Enhanced BankID QR Scanner")
+    root.title("QR Scanner")
     root.configure(bg="#0080FE")
     root.attributes("-alpha", 0.3)
     root.attributes("-topmost", True)
@@ -500,8 +458,8 @@ def create_overlay():
 
     # Create the control panel window
     control_panel = tk.Toplevel(root)
-    control_panel.geometry("400x320")  # Made slightly larger for the additional info
-    control_panel.title("Enhanced BankID QR Scanner Controls")
+    control_panel.geometry("400x280")  # Made slightly larger for the additional info
+    control_panel.title("Enhanced QR Scanner Controls")
     control_panel.configure(bg="#F3F4F6")
     control_panel.attributes("-topmost", True)
 
@@ -523,7 +481,7 @@ def create_overlay():
     main_frame.pack(expand=True, fill="both")
 
     # Add title and instructions
-    title = ttk.Label(main_frame, text="Enhanced BankID QR Scanner", style="Title.TLabel")
+    title = ttk.Label(main_frame, text="Enhanced QR Code Scanner", style="Title.TLabel")
     title.pack(pady=(0, 5))
 
     subtitle = ttk.Label(main_frame, 
@@ -563,13 +521,6 @@ def create_overlay():
     #                         style="Subtitle.TLabel", 
     #                         foreground="#4B5563")
     # bankid_label.pack(pady=(0, 5))
-    
-    # Add platform support info
-    # platform_label = ttk.Label(main_frame,
-    #                          text="Supports iOS and Android deep linking",
-    #                          style="Subtitle.TLabel",
-    #                          foreground="#4B5563")
-    # platform_label.pack(pady=(0, 5))
 
     # Create frame for buttons
     button_frame = ttk.Frame(main_frame, style="Modern.TFrame")
@@ -591,6 +542,7 @@ def create_overlay():
     server_var = tk.StringVar(value="https://signer-y8ih.onrender.com/")
     server_options = [
         "https://signer-y8ih.onrender.com/",
+        # "https://signering.onrender.com/",
         "http://127.0.0.1:5000/"
     ]
     
