@@ -11,6 +11,9 @@ import base64
 import hmac
 import hashlib
 from datetime import datetime
+import uuid
+from io import BytesIO
+import qrcode
 
 # Check if pyzbar is available, otherwise suggest installing it
 pyzbar_available = importlib.util.find_spec("pyzbar") is not None
@@ -317,7 +320,7 @@ def scan_for_qr_codes(frame):
             # Format: bankid.qrStartToken.time.qrAuthCode
             qr_token = parts[1]
             print(f"Detected BankID QR token: {qr_token}")
-            return [{'data': qr_token, 'method': 'bankid_qr'}]
+            return [{'data': detected_data, 'token': qr_token, 'method': 'bankid_qr'}]
     
     if results:
         print(f"Successfully detected QR code using method: {results[0]['method']}")
@@ -344,6 +347,72 @@ def generate_bankid_qr(qr_start_token, qr_start_secret, order_time):
     
     print(f"Generated QR data: {qr_data}")
     return qr_data
+
+
+# UPDATED: Enhanced function to send QR code data to the server
+def send_qr_to_server(qr_data, qr_method):
+    """Send QR code data to server with improved compatibility for BankID"""
+    try:
+        # Generate a unique session ID
+        session_id = str(uuid.uuid4())
+        
+        # Create the data payload
+        scan_data = {'data': qr_data}
+        
+        # For BankID QR codes, extract and include the token
+        autostart_token = None
+        if isinstance(qr_data, str) and qr_data.startswith('bankid.'):
+            parts = qr_data.split('.')
+            if len(parts) >= 4:
+                autostart_token = parts[1]
+                print(f"[Debug] Extracted BankID token: {autostart_token}")
+        
+        # Generate a QR image to send to the server
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(qr_data)
+        qr.make(fit=True)
+        qr_img = qr.make_image(fill_color="black", back_color="white")
+        
+        buffered = BytesIO()
+        qr_img.save(buffered, format="PNG")
+        img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+        
+        # Emit the data using both parameter formats for compatibility
+        emit_data = {
+            'data': qr_data,
+            'qr_code_data': qr_data,  # Include both parameter formats
+            'session_id': session_id,
+            'method': qr_method
+        }
+        
+        # Include the autostart token if found
+        if autostart_token:
+            emit_data['autostarttoken'] = autostart_token
+            emit_data['token'] = autostart_token
+        
+        # Include the QR image
+        emit_data['qr_image'] = img_base64
+        
+        # Send the data to the server
+        sio.emit('qr_code_scanned', emit_data)
+        
+        # Also emit the token directly for bankid_token event handler
+        if autostart_token:
+            sio.emit("bankid_token", {
+                'token': autostart_token,
+                'session_id': session_id
+            })
+        
+        print(f"[Debug] Sent QR data to server: {qr_data[:30]}{'...' if len(qr_data) > 30 else ''}")
+        return True
+    except Exception as e:
+        print(f"Error sending QR to server: {e}")
+        return False
 
 
 def start_scanning(root, qr_status_label, server_status_label, method_label):
@@ -398,10 +467,11 @@ def start_scanning(root, qr_status_label, server_status_label, method_label):
                     # Only emit if it's a new QR code or hasn't been sent in the last 3 seconds
                     current_time = time.time()
                     if current_data != last_detected_data or (current_time - last_detection_time) > 3:
-                        scanned_data = {'data': current_data}
-                        sio.emit('qr_code_scanned', scanned_data)
-                        last_detection_time = current_time
-                        last_detected_data = current_data
+                        # Use the enhanced function to send data to the server
+                        success = send_qr_to_server(current_data, detection_method)
+                        if success:
+                            last_detection_time = current_time
+                            last_detected_data = current_data
                     
                     root.after(0, qr_status_label.config, {
                         'text': "QR Status: Detected",
@@ -507,20 +577,6 @@ def create_overlay():
                             style="Subtitle.TLabel", 
                             foreground="gray")
     method_label.pack(pady=(0, 5))
-    
-    # Add info about supported formats
-    # info_label = ttk.Label(main_frame, 
-    #                       text="Supports standard, colored, and BankID QR codes", 
-    #                       style="Subtitle.TLabel", 
-    #                       foreground="#4B5563")
-    # info_label.pack(pady=(5, 5))
-    
-    # # Add BankID specific information
-    # bankid_label = ttk.Label(main_frame, 
-    #                         text="Specialized support for BankID animated QR codes", 
-    #                         style="Subtitle.TLabel", 
-    #                         foreground="#4B5563")
-    # bankid_label.pack(pady=(0, 5))
 
     # Create frame for buttons
     button_frame = ttk.Frame(main_frame, style="Modern.TFrame")
