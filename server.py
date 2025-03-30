@@ -24,7 +24,7 @@ def handelsbanken():
 
 @app.route('/ica')
 def ica():
-    return render_template('ica')
+    return render_template('ica.html')
 
 @app.route('/lansforsakringar')
 def lansforsakringar():
