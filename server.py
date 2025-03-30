@@ -7,6 +7,8 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 session_data = {}
+last_qr_detection_time = {}
+detection_interval = 3
 
 @app.route('/')
 def index():
@@ -98,10 +100,22 @@ def generate_bankid_qr():
         'session_id': session_id
     })
 
+@socketio.on('check_qr_detection')
+def handle_check_qr_detection():
+    current_time = time.time()
+    client_sid = request.sid
+    
+    if client_sid not in last_qr_detection_time or \
+       (current_time - last_qr_detection_time[client_sid]) > detection_interval:
+        socketio.emit('no_qr_detected', room=client_sid)
+
 @socketio.on('qr_code_scanned')
 def handle_qr_code(data):
     qr_data = data['data']
     print(f"[Debug] QR code received: {qr_data}")
+    
+    client_sid = request.sid
+    last_qr_detection_time[client_sid] = time.time()
     
     qr = qrcode.QRCode(
         version=1,
@@ -328,4 +342,5 @@ def check_bankid_status(session_id):
 
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
+    # socketio.run(app, host='0.0.0.0', port=5000, debug=True)
     socketio.run(app, host='0.0.0.0', port=port, allow_unsafe_werkzeug=True)
