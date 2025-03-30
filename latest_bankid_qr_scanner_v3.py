@@ -136,11 +136,6 @@ def scan_for_qr_codes(frame):
             dilated_red = cv2.dilate(red_inverted, np.ones((3, 3), np.uint8), iterations=1)
             try_detection(dilated_red, "red_dilated_")
     
-    if detected_data and detected_data.startswith('bankid.'):
-        parts = detected_data.split('.')
-        if len(parts) == 4:
-            return [{'data': parts[1], 'method': 'bankid_qr'}]
-    
     return results
 
 def generate_bankid_qr(qr_start_token, qr_start_secret, order_time):

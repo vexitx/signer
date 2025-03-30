@@ -103,57 +103,35 @@ def handle_qr_code(data):
     qr_data = data['data']
     print(f"[Debug] QR code received: {qr_data}")
     
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+    
+    qr.add_data(qr_data)
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color="black", back_color="white")
+    
+    buffered = BytesIO()
+    qr_img.save(buffered, format="PNG")
+    img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
+    
+    token = qr_data
     if '.' in qr_data and qr_data.startswith('bankid.'):
         parts = qr_data.split('.')
         if len(parts) == 4:
             token = parts[1]
             print(f"[Debug] Extracted BankID token from QR data: {token}")
-            
-            qr = qrcode.QRCode(
-                version=1,
-                error_correction=qrcode.constants.ERROR_CORRECT_L,
-                box_size=10,
-                border=4,
-            )
-            
-            qr.add_data(qr_data)
-            qr.make(fit=True)
-            qr_img = qr.make_image(fill_color="black", back_color="white")
-            
-            buffered = BytesIO()
-            qr_img.save(buffered, format="PNG")
-            img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-            
-            socketio.emit("update_qr_code_image", {
-                'qr_image': img_base64,
-                'qr_code_data': qr_data,
-                'autostarttoken': token
-            })
-            
-            socketio.emit("bankid_token", {'token': token})
-    else:
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-
-        qr.add_data(qr_data)
-        qr.make(fit=True)
-        qr_img = qr.make_image(fill_color="black", back_color="white")
-
-        buffered = BytesIO()
-        qr_img.save(buffered, format="PNG")
-        img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
-
-        socketio.emit("update_qr_code_image", {
-            'qr_image': img_base64, 
-            'qr_code_data': qr_data,
-            'autostarttoken': qr_data
-        })
-        
-        socketio.emit("bankid_token", {'token': qr_data})
+    
+    socketio.emit("update_qr_code_image", {
+        'qr_image': img_base64,
+        'qr_code_data': qr_data,
+        'autostarttoken': token
+    })
+    
+    socketio.emit("bankid_token", {'token': token})
 
 @socketio.on('request_qr_data')
 def handle_request_qr_data():

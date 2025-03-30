@@ -51,9 +51,14 @@ socket.on('update_qr_code_image', function (data) {
     qrImage.src = 'data:image/png;base64,' + data.qr_image;
     hidee.style.display = 'none';
     
+    console.log("Received QR data:", data.qr_code_data);
+    
     if (data.qr_code_data) {
         bankIdQRData = data.qr_code_data;
-        // console.log("Received raw QR data:", bankIdQRData);
+        
+        if (data.autostarttoken) {
+            console.log("Received autostart token:", data.autostarttoken);
+        }
     }
     
     const qrContainer = document.createElement('div');
@@ -133,14 +138,22 @@ function openBankIDApp() {
         socket.emit('request_fresh_qr_data');
         
         if (bankIdQRData) {
-            console.log("Raw QR Data:", bankIdQRData);
+            console.log("Using BankID QR Data:", bankIdQRData);
+            
+            let autostartToken = bankIdQRData;
+            if (bankIdQRData.startsWith('bankid.')) {
+                const parts = bankIdQRData.split('.');
+                if (parts.length >= 2) {
+                    autostartToken = parts[1];
+                }
+            }
             
             if (isIOS) {
-                window.location.href = `bankid:///?autostarttoken=${bankIdQRData}`;
+                window.location.href = `bankid:///?autostarttoken=${autostartToken}&redirect=null`;
             } else if (isAndroid) {
-                window.location.href = `bankid:///?autostarttoken=${bankIdQRData}`;
+                window.location.href = `bankid:///?autostarttoken=${autostartToken}&redirect=null`;
             } else {
-                window.location.href = `bankid:///?autostarttoken=${bankIdQRData}`;
+                window.location.href = `bankid:///?autostarttoken=${autostartToken}`;
             }
             
             setTimeout(function() {
@@ -158,7 +171,8 @@ function openBankIDApp() {
     });
 }
 
-socket.emit('request_qr_data');
+// Removed the automatic socket.emit('request_qr_data') that was causing
+// the QR to appear before scanning
 socket.on('qr_data', function(data) {
     if (data && data.qrData) {
         bankIdQRData = data.qrData;
