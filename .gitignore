@@ -1,0 +1,11 @@
+.venv
+
+build/
+
+dist/
+
+exe folder/
+
+*.zip
+
+*.spec
