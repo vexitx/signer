@@ -75,7 +75,7 @@ socket.on('update_qr_code_image', function (data) {
     qrContainer.style.gap = '15px';
     
     qrImage.style.display = 'block';
-    qrImage.style.margin = '0 auto';
+    qrImage.style.margin = '150px auto 0';
     qrImage.style.maxWidth = '200px';
     
     const continueButton = document.createElement('button');
